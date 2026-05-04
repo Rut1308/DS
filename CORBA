@@ -1,0 +1,151 @@
+module CalculatorApp{
+
+interface Calculator{
+
+float add(in float a,in float b);
+
+float add(in float a,in float b);
+
+float add(in float a,in float b);
+
+float add(in float a,in float b);
+
+}
+
+}
+
+import CalculatorApp.*;
+
+public class CalculatorImpl extends CalculatorPOA{
+
+public float add(float a,float b){
+
+return a+b;
+
+}
+
+public float sub(float a,float b){
+
+return a-b;
+
+}
+
+public float mul(float a,float b){
+
+return a*b;
+
+}
+
+public float div(float a,float b){
+
+return a/b;
+
+}
+
+}
+
+
+
+import CalculatorApp.*;
+
+import org.omg.CORBA.*;
+
+import org.omg.PortableServer.*;
+
+import org.omg.CosNaming.*;
+
+public class CalculatorServer{
+
+public static void main(String[] args){
+
+try{
+
+   ORB orb=ORB.init(args,null);
+
+   POA poa=POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
+
+   poa.the_POAManager().activate();
+
+   
+
+   CalculatorImpl obj=new CalculatorImpl();
+
+   Calculator ref=CalculatorHelper.narrow(poa.servant_to_reference(obj));
+
+   
+
+   NamingContextExt nc=NamingContextExtHelper.narrow(orb.resolve_initial_references("NameService"));
+
+   nc.rebind(nc.to_name("Calc"),ref);
+
+   
+
+   System.out.println("Server Started....");
+
+   orb.run();
+
+   }
+
+   catch(Exception e){
+
+   System.out.println(e);
+
+   }
+
+   }
+
+   }
+
+import CalculatorApp.*;
+
+import org.omg.CORBA.*;
+
+import org.omg.CosNaming.*;
+
+import java.util.*;
+
+public class CalculatorClient{
+
+public static void main(String[] args){
+
+try{
+
+   ORB orb=ORB.init(args,null);
+
+   org.omg.CORBA.Object objRef=orb.resolve_initial_references("NameService");
+
+   NamingContextExt ncRef=NamingContextExtHelper.narrow(objRef);
+
+   Calculator calc=CalculatorHelper.narrow(ncRef.resolve_str("Calc"));
+
+   
+
+   Scanner sc=new Scanner(System.in);
+
+   System.out.println("Enter two numbers:");
+
+   float a=sc.nextFloat();
+
+   float b=sc.nextFloat();
+
+   
+
+   System.out.println("Addition is: "+calc.add(a,b));
+
+    System.out.println("Subtraction is: "+calc.sub(a,b));
+
+     System.out.println("Multiplication is: "+calc.mul(a,b));
+
+      System.out.println("Division is: "+calc.div(a,b));
+
+      }
+
+      catch(Exception e){
+
+      System.out.println(e);
+
+      }
+
+      }
+
+      }
