@@ -149,3 +149,7 @@ try{
       }
 
       }
+javac *.java CalculatorApp/*.java
+tnameserv -ORBInitialPort 1050
+java CalculatorServer -ORBInitialPort 1050 -ORBInitialHost localhost
+java CalculatorClient -ORBInitialPort 1050 -ORBInitialHost localhost
